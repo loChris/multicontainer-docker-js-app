@@ -4,4 +4,4 @@
 Multicontainer Docker app with a JS Fibonacci sequencer.
 
 ## Goal
-This project is a learning experiment on how to use Docker and develop a multicontainer app.
+This project is a learning experience/experiment on how to use Docker to develop multicontainer apps.
