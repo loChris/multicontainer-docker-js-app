@@ -1,7 +1,7 @@
 import keys from './keys.js';
 import redis from 'redis';
 
-const redisClient = redis.createClien({
+const redisClient = redis.createClient({
 	host: keys.redisHost,
 	port: keys.redisPort,
 	retry_strategy: () => 1000,
