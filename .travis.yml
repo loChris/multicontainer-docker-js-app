@@ -1,0 +1,15 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t lochris/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true lochris/react-test npm test
+
+after_success:
+  - docker build -t lochris/multi-client ./client
+  - docker build -t lochris/multi-nginx ./nginx
+  - docker build -t lochris/multi-server ./server
+  - docker build -t lochris/multi-worker ./worker
