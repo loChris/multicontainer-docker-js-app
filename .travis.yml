@@ -14,7 +14,7 @@ after_success:
   - docker build -t lochris/multi-server ./server
   - docker build -t lochris/multi-worker ./worker
   # log in to docker cli
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - echo "\$DOCKER_PASSWORD" | docker login -u "\$DOCKER_ID" --password-stdin
   # push images to docker hub
   - docker push lochris/multi-client
   - docker push lochris/multi-nginx
