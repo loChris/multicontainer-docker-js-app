@@ -1,22 +1,34 @@
-# sudo: required
-# services:
-#   - docker
+sudo: required
+services:
+  - docker
 
-# before_install:
-#   - docker build -t lochris/react-test -f ./client/Dockerfile.dev ./client
+before_install:
+  - docker build -t lochris/react-test -f ./client/Dockerfile.dev ./client
 
-# script:
-#   - docker run -e CI=true lochris/react-test npm test
+script:
+  - docker run -e CI=true lochris/react-test npm test
 
-# after_success:
-#   - docker build -t lochris/multi-client ./client
-#   - docker build -t lochris/multi-nginx ./nginx
-#   - docker build -t lochris/multi-server ./server
-#   - docker build -t lochris/multi-worker ./worker
-#   # log in to docker cli
-#   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-#   # push images to docker hub
-#   - docker push lochris/multi-client
-#   - docker push lochris/multi-nginx
-#   - docker push lochris/multi-server
-#   - docker push lochris/multi-worker
+after_success:
+  - docker build -t lochris/multi-client ./client
+  - docker build -t lochris/multi-nginx ./nginx
+  - docker build -t lochris/multi-server ./server
+  - docker build -t lochris/multi-worker ./worker
+  # log in to docker cli
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # push images to docker hub
+  - docker push lochris/multi-client
+  - docker push lochris/multi-nginx
+  - docker push lochris/multi-server
+  - docker push lochris/multi-worker
+
+deploy:
+  provider: elasticbeanstalk
+  region: 'us-east-1'
+  app: 'multi-docker'
+  env: 'MultiDocker-env'
+  bucket_name: elasticbeanstalk-us-east-1-091863196413
+  bucket_path: 'multi-docker'
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
